@@ -155,13 +155,17 @@ h2 span{text-transform:none;letter-spacing:0;font-weight:400;font-variant-numeri
 body:not(.locked) #gate:not(.leaving){display:none}
 #gate .gx{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 #gate .gx::before{content:"";position:absolute;left:50%;top:38%;width:260px;height:220px;margin:-110px 0 0 -130px;pointer-events:none;background:radial-gradient(closest-side,rgba(226,171,63,.16),transparent);filter:blur(8px);opacity:.7;animation:breathe 6s ease-in-out infinite alternate}
+@keyframes lgfade{0%{opacity:1;transform:none;filter:drop-shadow(0 0 18px rgba(243,205,111,.5))}25%{opacity:1;transform:scale(1.04);filter:drop-shadow(0 0 30px rgba(243,205,111,.85)) brightness(1.12)}100%{opacity:0;transform:scale(1.12);filter:drop-shadow(0 0 30px rgba(243,205,111,0)) blur(3px)}}
 @keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-#gate::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(90% 55% at 50% 30%,#22170a 0%,var(--bg1) 45%,var(--bg) 100%)}
+#gate::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(90% 55% at 50% 30%,#22170a 0%,var(--bg1) 45%,var(--bg) 100%)}
 #gate.leaving{pointer-events:none;overflow:hidden}
-#gate.leaving::before{animation:fo .6s .15s var(--ez) both}
+#gate::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;background:linear-gradient(180deg,rgba(34,23,10,.42),rgba(10,8,6,.5));-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%)}
+#gate.leaving::before{animation:fo .4s .05s ease both}
+#gate.leaving::after{animation:glassout 1.15s cubic-bezier(.4,0,.2,1) both}
+@keyframes glassout{0%{opacity:1}28%{opacity:1}100%{opacity:0}}
 #gate.unl .gc{animation:gout .25s var(--ez) both}
 #gate.unl .gx::before{animation:fo .3s ease both}
-#gate.unl .lg{animation:lgopen .85s cubic-bezier(.55,0,.2,1) both}
+#gate.unl .lg{animation:lgfade 1.05s cubic-bezier(.4,0,.2,1) both}
 #gate.bad .lg{animation:lgno .4s ease}
 @keyframes lgopen{0%{transform:none;opacity:1;filter:drop-shadow(0 0 18px rgba(243,205,111,.5))}24%{transform:scale(1.12);opacity:1;filter:drop-shadow(0 0 32px rgba(243,205,111,.9)) brightness(1.15)}100%{transform:scale(9);opacity:0;filter:drop-shadow(0 0 40px rgba(243,205,111,0)) brightness(1.3) blur(4px)}}
 @keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
@@ -949,7 +953,7 @@ function handleLock() {
     }
   });
 }
-/* abertura: a logo cresce e some enquanto o painel aparece em fade */
+/* abertura: o fundo vira vidro fosco sobre o painel e some aos poucos junto com a logo */
 var unlocking = false;
 function playUnlock() {
   var gt = $('#gate');
@@ -960,7 +964,7 @@ function playUnlock() {
   setTimeout(function () {
     var hl = $('#hlogo'); if (hl) { hl.classList.remove('shine'); void hl.offsetWidth; hl.classList.add('shine'); }
   }, 500);
-  setTimeout(function () { gt.classList.remove('unl', 'leaving'); unlocking = false; }, 900);
+  setTimeout(function () { gt.classList.remove('unl', 'leaving'); unlocking = false; }, 1200);
 }
 function unlockApp() {
   document.body.classList.remove('locked');
