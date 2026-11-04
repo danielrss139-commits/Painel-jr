@@ -1,0 +1,17 @@
+{
+  "name": "JR Barbearia — Painel financeiro",
+  "short_name": "JR Barbearia",
+  "description": "Cortes, faturamento, entradas e saídas da JR Barbearia.",
+  "lang": "pt-BR",
+  "start_url": "./painel-jr-1.index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a0806",
+  "theme_color": "#0a0806",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
