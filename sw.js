@@ -1,6 +1,6 @@
 /* JR Barbearia — service worker. Rede primeiro para o painel (nunca fica velho);
    sem internet usa a última cópia. Firebase e fontes ficam guardados para abrir offline. */
-const V='jr-v4';
+const V='jr-v5';
 const SHELL=['./','./painel-jr-1.index.html','./manifest.json','./icon-192.png','./apple-touch-icon.png','./icon-512.png','./icon-maskable-512.png'];
 const FB=['app','firestore'].map(n=>'https://cdnjs.cloudflare.com/ajax/libs/firebase/12.17.1/firebase-'+n+'-compat.min.js');
 self.addEventListener('install',e=>{e.waitUntil((async()=>{

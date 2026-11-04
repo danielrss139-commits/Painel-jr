@@ -151,29 +151,23 @@ h2 span{text-transform:none;letter-spacing:0;font-weight:400;font-variant-numeri
 .bc.td small,.bc.td .bv{color:var(--g2)}
 
 /* ---------- entrada (senha) ---------- */
-#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:calc(32px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) calc(32px + env(safe-area-inset-bottom,0px)) max(28px,env(safe-area-inset-left,0px));overflow-y:auto;background:radial-gradient(90% 55% at 50% 30%,#22170a 0%,var(--bg1) 45%,var(--bg) 100%)}
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:calc(32px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) calc(32px + env(safe-area-inset-bottom,0px)) max(28px,env(safe-area-inset-left,0px));overflow-y:auto}
 body:not(.locked) #gate:not(.leaving){display:none}
 #gate .gx{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
 #gate .gx::before{content:"";position:absolute;left:50%;top:38%;width:260px;height:220px;margin:-110px 0 0 -130px;pointer-events:none;background:radial-gradient(closest-side,rgba(226,171,63,.16),transparent);filter:blur(8px);opacity:.7;animation:breathe 6s ease-in-out infinite alternate}
-#gate .ring{position:absolute;left:50%;top:0;width:200px;height:200px;margin:-40px 0 0 -100px;pointer-events:none;overflow:visible;transform:rotate(-90deg);opacity:0}
-#gate .ring circle{stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 6px rgba(243,205,111,.7))}
-#gate.unl .ring{animation:ringin .9s var(--ez) both}
-#gate.unl .ring circle{animation:ringdraw .6s cubic-bezier(.6,0,.2,1) both}
-#gate .burst{position:absolute;left:50%;top:60px;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;pointer-events:none;opacity:0;background:radial-gradient(circle,rgba(248,227,168,.9),rgba(226,171,63,.35) 45%,transparent 70%)}
-#gate.unl .burst{animation:burst .8s .5s var(--ez) both}
-#gate.bad .lg{animation:lgno .4s ease}
-@keyframes ringdraw{to{stroke-dashoffset:0}}
-@keyframes ringin{0%{opacity:0;transform:rotate(-90deg) scale(.9)}20%{opacity:1}65%{opacity:1;transform:rotate(-90deg) scale(1)}100%{opacity:0;transform:rotate(-90deg) scale(1.35)}}
-@keyframes burst{0%{opacity:0;transform:scale(1)}30%{opacity:1}100%{opacity:0;transform:scale(30)}}
 @keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-#gate.unl .gx::before{animation:glowup .8s var(--ez) both}
-#gate.unl .lg{animation:lgglow .9s var(--ez) both}
-#gate.unl .gc{animation:gout .35s var(--ez) both}
-#gate.leaving{pointer-events:none;animation:gateout .55s var(--ez) both}
+#gate::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(90% 55% at 50% 30%,#22170a 0%,var(--bg1) 45%,var(--bg) 100%)}
+#gate.leaving{pointer-events:none;overflow:hidden}
+#gate.leaving::before{animation:fo .6s .15s var(--ez) both}
+#gate.unl .gc{animation:gout .25s var(--ez) both}
+#gate.unl .gx::before{animation:fo .3s ease both}
+#gate.unl .lg{animation:lgopen .85s cubic-bezier(.55,0,.2,1) both}
+#gate.bad .lg{animation:lgno .4s ease}
+@keyframes lgopen{0%{transform:none;opacity:1;filter:drop-shadow(0 0 18px rgba(243,205,111,.5))}24%{transform:scale(1.12);opacity:1;filter:drop-shadow(0 0 32px rgba(243,205,111,.9)) brightness(1.15)}100%{transform:scale(9);opacity:0;filter:drop-shadow(0 0 40px rgba(243,205,111,0)) brightness(1.3) blur(4px)}}
+@keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+@keyframes fo{to{opacity:0}}
 @keyframes glowup{from{opacity:.7;transform:scale(1)}to{opacity:1;transform:scale(1.45)}}
-@keyframes lgglow{0%{transform:none;filter:drop-shadow(0 0 10px rgba(226,171,63,.22))}55%{transform:scale(1.07);filter:drop-shadow(0 0 26px rgba(243,205,111,.75)) brightness(1.12)}100%{transform:scale(1.05);filter:drop-shadow(0 0 22px rgba(243,205,111,.6)) brightness(1.08)}}
 @keyframes gout{to{opacity:0;transform:translateY(12px)}}
-@keyframes gateout{from{opacity:1;transform:none;filter:none}to{opacity:0;transform:scale(1.08);filter:blur(6px)}}
 body.locked .w,body.locked #bn{display:none!important}
 #gate .lg{width:150px;height:119px;animation:lgin 1s var(--ez) both}
 .gc{width:100%;max-width:340px;animation:gin .7s var(--ez) .15s both}
@@ -292,7 +286,7 @@ body.sho .toast.on{transform:translate(-50%,0)}
 <body class="locked">
 
 <div id="gate">
-  <div class="gx"><span class="logo lg shine" role="img" aria-label="JR Barbearia"></span><svg class="ring" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e3a8"/><stop offset=".5" stop-color="#e2ab3f"/><stop offset="1" stop-color="#a97a28"/></linearGradient></defs><circle cx="100" cy="100" r="92" fill="none" stroke="url(#rg)" stroke-width="2" stroke-linecap="round" pathLength="100"/></svg><span class="burst" aria-hidden="true"></span></div>
+  <div class="gx"><span class="logo lg shine" role="img" aria-label="JR Barbearia"></span></div>
   <div class="gc">
     <p id="lock-sub">Digite a senha para entrar no painel</p>
     <label for="lock-pass">Senha</label>
@@ -955,19 +949,18 @@ function handleLock() {
     }
   });
 }
-/* animação de desbloqueio: logo brilha, a tela some revelando o painel */
+/* abertura: a logo cresce e some enquanto o painel aparece em fade */
 var unlocking = false;
 function playUnlock() {
   var gt = $('#gate');
   if (rm()) { unlockApp(); return; }
   unlocking = true; buzz([12, 30, 18]);
-  gt.classList.remove('bad'); gt.classList.add('unl');
-  var lg = gt.querySelector('.lg'); lg.classList.remove('shine'); void lg.offsetWidth; lg.classList.add('shine');
+  gt.classList.remove('bad'); gt.classList.add('unl', 'leaving');
+  unlockApp();
   setTimeout(function () {
-    gt.classList.add('leaving'); unlockApp();
     var hl = $('#hlogo'); if (hl) { hl.classList.remove('shine'); void hl.offsetWidth; hl.classList.add('shine'); }
-    setTimeout(function () { gt.classList.remove('unl', 'leaving'); unlocking = false; }, 560);
-  }, 780);
+  }, 500);
+  setTimeout(function () { gt.classList.remove('unl', 'leaving'); unlocking = false; }, 900);
 }
 function unlockApp() {
   document.body.classList.remove('locked');
