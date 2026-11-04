@@ -151,37 +151,78 @@ h2 span{text-transform:none;letter-spacing:0;font-weight:400;font-variant-numeri
 .bc.td small,.bc.td .bv{color:var(--g2)}
 
 /* ---------- entrada (senha) ---------- */
-#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:calc(32px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) calc(32px + env(safe-area-inset-bottom,0px)) max(28px,env(safe-area-inset-left,0px));overflow-y:auto}
-body:not(.locked) #gate:not(.leaving){display:none}
-#gate .gx{position:relative;display:flex;flex-direction:column;align-items:center;gap:22px}
-#gate .gx::before{content:"";position:absolute;left:50%;top:38%;width:260px;height:220px;margin:-110px 0 0 -130px;pointer-events:none;background:radial-gradient(closest-side,rgba(226,171,63,.16),transparent);filter:blur(8px);opacity:.7;animation:breathe 6s ease-in-out infinite alternate}
-@keyframes lgfade{0%{opacity:1;transform:none;filter:drop-shadow(0 0 18px rgba(243,205,111,.5))}25%{opacity:1;transform:scale(1.04);filter:drop-shadow(0 0 30px rgba(243,205,111,.85)) brightness(1.12)}100%{opacity:0;transform:scale(1.12);filter:drop-shadow(0 0 30px rgba(243,205,111,0)) blur(3px)}}
-@keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
-#gate::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(90% 55% at 50% 30%,#22170a 0%,var(--bg1) 45%,var(--bg) 100%)}
-#gate.leaving{pointer-events:none;overflow:hidden}
-#gate::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;background:linear-gradient(180deg,rgba(34,23,10,.42),rgba(10,8,6,.5));-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%)}
-#gate.leaving::before{animation:fo .4s .05s ease both}
-#gate.leaving::after{animation:glassout 1.15s cubic-bezier(.4,0,.2,1) both}
-@keyframes glassout{0%{opacity:1}28%{opacity:1}100%{opacity:0}}
-#gate.unl .gc{animation:gout .25s var(--ez) both}
-#gate.unl .gx::before{animation:fo .3s ease both}
-#gate.unl .lg{animation:lgfade 1.05s cubic-bezier(.4,0,.2,1) both}
+#gate{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;padding:calc(32px + env(safe-area-inset-top,0px)) max(28px,env(safe-area-inset-right,0px)) calc(32px + env(safe-area-inset-bottom,0px)) max(28px,env(safe-area-inset-left,0px));overflow:hidden}
+body:not(.locked) #gate:not(.leaving):not(.hold){display:none}
+#gate::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(90% 55% at 50% 40%,#1c1309 0%,var(--bg1) 45%,var(--bg) 100%)}
+#gate::after{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:0;background:rgba(14,10,6,.38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);will-change:opacity}
+#gate .gx{position:relative;display:flex;justify-content:center;transform:translate3d(0,var(--dy,0px),0);will-change:transform}
+#gate.ready .gx{transform:translate3d(0,0,0);transition:transform .85s cubic-bezier(.22,.9,.24,1)}
+#gate .gx::before{content:"";position:absolute;left:50%;top:50%;width:280px;height:240px;margin:-120px 0 0 -140px;pointer-events:none;background:radial-gradient(closest-side,rgba(226,171,63,.15),transparent);opacity:0;transition:opacity 1s ease .2s}
+#gate.ready .gx::before{opacity:1}
+#gate .arc{position:absolute;left:50%;top:50%;width:220px;height:220px;margin:-110px 0 0 -110px;pointer-events:none;overflow:visible;transform:rotate(-120deg);opacity:0}
+#gate .arc circle{stroke-dasharray:100;stroke-dashoffset:100;filter:drop-shadow(0 0 5px rgba(243,205,111,.6))}
+#gate.intro .arc{animation:arcop 1.4s ease .15s both}
+#gate.intro .arc circle{animation:arcdraw .9s cubic-bezier(.6,0,.25,1) .15s both}
+@keyframes arcdraw{to{stroke-dashoffset:0}}
+@keyframes arcop{0%{opacity:0;transform:rotate(-120deg)}12%{opacity:1}70%{opacity:1;transform:rotate(-60deg)}100%{opacity:0;transform:rotate(-40deg) scale(1.06)}}
+#gate .spk{position:absolute;left:57%;top:4%;width:16px;height:16px;pointer-events:none;opacity:0;filter:drop-shadow(0 0 6px rgba(251,231,176,.9))}
+#gate.intro .spk{animation:spk .7s ease 1s both}
+@keyframes spk{0%{opacity:0;transform:scale(0) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}100%{opacity:0;transform:scale(.2) rotate(90deg)}}
+#gate .lg{width:150px;height:119px;animation:lgin2 .45s ease-out backwards;will-change:transform,opacity}
+@keyframes lgin2{from{opacity:.4;transform:scale(.97)}to{opacity:1;transform:none}}
+.gc{width:100%;max-width:300px;opacity:0;transform:translate3d(0,18px,0);pointer-events:none}
+#gate.ready .gc{opacity:1;transform:none;pointer-events:auto;transition:opacity .55s ease .3s,transform .75s cubic-bezier(.22,.9,.24,1) .3s}
+.gc p{display:none}
+.gc p.on{display:block;text-align:center;color:var(--rd);margin:0 0 18px;font-size:13px}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pin{display:flex;justify-content:center;gap:18px;height:18px;margin:2px 0 6px}
+.pin i{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(226,171,63,.45);transition:background .2s,border-color .2s,box-shadow .2s}
+.pin i.on{background:var(--gold);border-color:transparent;box-shadow:0 0 12px rgba(243,205,111,.55);animation:pop .32s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{0%{transform:scale(.4)}100%{transform:scale(1)}}
+#gate.unl .pin i{background:var(--gold);box-shadow:0 0 16px rgba(243,205,111,.85)}
+.kp{display:grid;grid-template-columns:repeat(3,72px);gap:14px 22px;justify-content:center;margin-top:8px}
+.k{width:72px;height:72px;border-radius:50%;border:1px solid rgba(226,171,63,.16);background:radial-gradient(circle at 50% 30%,rgba(255,236,190,.07),rgba(255,236,190,.015) 70%);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--fg);font-size:27px;font-weight:300;font-variant-numeric:tabular-nums;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;transition:transform .15s ease,border-color .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.k::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle,rgba(243,205,111,.45),transparent 65%);opacity:0;transform:scale(.3)}
+.k.hit{transform:scale(.92);border-color:rgba(243,205,111,.55)}
+.k.hit::after{animation:rip .45s ease-out}
+@keyframes rip{0%{opacity:1;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+.k.ks{border-color:transparent;background:none;-webkit-backdrop-filter:none;backdrop-filter:none;color:var(--mut);font-size:22px}
+.k.ok{color:var(--g2)}
+#gate.ready .k{animation:kin .5s cubic-bezier(.22,.9,.24,1) backwards}
+#gate.ready .k:nth-child(1){animation-delay:0.350s}
+#gate.ready .k:nth-child(2){animation-delay:0.385s}
+#gate.ready .k:nth-child(3){animation-delay:0.420s}
+#gate.ready .k:nth-child(4){animation-delay:0.455s}
+#gate.ready .k:nth-child(5){animation-delay:0.490s}
+#gate.ready .k:nth-child(6){animation-delay:0.525s}
+#gate.ready .k:nth-child(7){animation-delay:0.560s}
+#gate.ready .k:nth-child(8){animation-delay:0.595s}
+#gate.ready .k:nth-child(9){animation-delay:0.630s}
+#gate.ready .k:nth-child(10){animation-delay:0.665s}
+#gate.ready .k:nth-child(11){animation-delay:0.700s}
+#gate.ready .k:nth-child(12){animation-delay:0.735s}
+@keyframes kin{from{opacity:0;transform:translate3d(0,14px,0) scale(.9)}to{opacity:1;transform:none}}
+#gate.bad .pin{animation:shake .4s ease}
+@media (max-height:640px){.kp{grid-template-columns:repeat(3,62px);gap:10px 20px}.k{width:62px;height:62px;font-size:24px}#gate{gap:22px}#gate .lg{width:120px;height:95px}}
+
+.ge{color:var(--rd);font-size:13px;text-align:center;min-height:18px;margin-top:6px}
+#gate.leaving{pointer-events:none}
+#gate.leaving::before{animation:fo .45s cubic-bezier(.4,0,.2,1) both}
+#gate.leaving::after{animation:glassout 1s cubic-bezier(.4,0,.2,1) both}
+@keyframes glassout{0%{opacity:1}30%{opacity:1}100%{opacity:0}}
+#gate.unl .gc{opacity:0;transform:translate3d(0,10px,0);transition:opacity .2s ease,transform .3s ease}
+#gate.unl .gx::before{opacity:0;transition:opacity .3s ease}
+#gate.unl .lg{animation:lgout .9s cubic-bezier(.4,0,.2,1) forwards}
+@keyframes lgout{0%{opacity:1;transform:none}25%{opacity:1;transform:scale(1.04)}100%{opacity:0;transform:scale(1.14)}}
 #gate.bad .lg{animation:lgno .4s ease}
-@keyframes lgopen{0%{transform:none;opacity:1;filter:drop-shadow(0 0 18px rgba(243,205,111,.5))}24%{transform:scale(1.12);opacity:1;filter:drop-shadow(0 0 32px rgba(243,205,111,.9)) brightness(1.15)}100%{transform:scale(9);opacity:0;filter:drop-shadow(0 0 40px rgba(243,205,111,0)) brightness(1.3) blur(4px)}}
 @keyframes lgno{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
 @keyframes fo{to{opacity:0}}
-@keyframes glowup{from{opacity:.7;transform:scale(1)}to{opacity:1;transform:scale(1.45)}}
-@keyframes gout{to{opacity:0;transform:translateY(12px)}}
 body.locked .w,body.locked #bn{display:none!important}
-#gate .lg{width:150px;height:119px;animation:lgin 1s var(--ez) both}
-.gc{width:100%;max-width:340px;animation:gin .7s var(--ez) .15s both}
-.gc p{text-align:center;color:var(--mut);margin:0 0 30px;font-size:14px}
 .gc label,.fld label{display:block;color:var(--mut);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .gc input,.fld input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--line2);border-radius:0;padding:12px 0;font-size:17px;outline:0;transition:border-color .2s}
 .gc input{text-align:center;letter-spacing:.4em}
 .gc input:focus,.fld input:focus{border-bottom-color:var(--g3);box-shadow:0 1px 0 0 var(--g3)}
 .gc .btn{margin-top:30px}
-.ge{color:var(--rd);font-size:13px;text-align:center;min-height:20px;margin-top:12px}
 .gc.shake{animation:shake .4s ease}
 @keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
 @keyframes mkin{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
@@ -290,13 +331,14 @@ body.sho .toast.on{transform:translate(-50%,0)}
 <body class="locked">
 
 <div id="gate">
-  <div class="gx"><span class="logo lg shine" role="img" aria-label="JR Barbearia"></span></div>
+  <div class="gx"><span class="logo lg shine" role="img" aria-label="JR Barbearia"></span><svg class="arc" viewBox="0 0 220 220" aria-hidden="true"><defs><linearGradient id="ag" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8e3a8"/><stop offset=".55" stop-color="#e2ab3f"/><stop offset="1" stop-color="#a97a28" stop-opacity="0"/></linearGradient></defs><circle cx="110" cy="110" r="104" pathLength="100" fill="none" stroke="url(#ag)" stroke-width="1.6" stroke-linecap="round"/></svg><svg class="spk" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 0C10.8 6.5 13.5 9.2 20 10C13.5 10.8 10.8 13.5 10 20C9.2 13.5 6.5 10.8 0 10C6.5 9.2 9.2 6.5 10 0Z" fill="#fbe7b0"/></svg></div>
   <div class="gc">
-    <p id="lock-sub">Digite a senha para entrar no painel</p>
-    <label for="lock-pass">Senha</label>
-    <input type="password" id="lock-pass" inputmode="numeric" autocomplete="current-password" placeholder="••••" maxlength="12" autofocus>
-    <button type="button" class="btn" id="lock-btn">Entrar</button>
+    <p id="lock-sub"></p>
+    <label for="lock-pass" class="sr">Senha</label>
+    <input type="password" id="lock-pass" class="sr" inputmode="none" autocomplete="current-password" maxlength="12" readonly tabindex="-1">
+    <div class="pin" id="pin" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
     <div class="ge" id="lock-error" role="alert"></div>
+    <div class="kp" id="kp"><button type="button" class="k" data-k="1">1</button><button type="button" class="k" data-k="2">2</button><button type="button" class="k" data-k="3">3</button><button type="button" class="k" data-k="4">4</button><button type="button" class="k" data-k="5">5</button><button type="button" class="k" data-k="6">6</button><button type="button" class="k" data-k="7">7</button><button type="button" class="k" data-k="8">8</button><button type="button" class="k" data-k="9">9</button><button type="button" class="k ks" data-k="del" aria-label="Apagar">⌫</button><button type="button" class="k" data-k="0">0</button><button type="button" class="k ks ok" data-k="ok" aria-label="Entrar" id="lock-btn">→</button></div>
   </div>
 </div>
 
@@ -942,14 +984,14 @@ function handleLock() {
   if (unlocking) return;
   var inp = $('#lock-pass'), err = $('#lock-error'), pass = inp.value;
   err.textContent = '';
-  if (!pass) { err.textContent = 'Digite a senha'; return; }
+  if (!pass) { err.textContent = 'Digite a senha'; var pn = $('#pin'); pn.classList.remove('nudge'); void pn.offsetWidth; return; }
   if (!(window.crypto && crypto.subtle)) { err.textContent = 'Abra o painel pelo link seguro (https).'; return; }
   sha256(pass).then(function (h) {
-    if (h === SENHA_HASH) { inp.value = ''; inp.blur(); playUnlock(); }
+    if (h === SENHA_HASH) { inp.value = ''; playUnlock(); setTimeout(pinDots, 1100); }
     else {
-      err.textContent = 'Senha incorreta. Tente novamente.'; inp.value = '';
+      err.textContent = 'Senha incorreta'; inp.value = ''; pinDots();
       var g = $('.gc'), gt = $('#gate'); g.classList.remove('shake'); gt.classList.remove('bad'); void g.offsetWidth; g.classList.add('shake'); gt.classList.add('bad');
-      buzz([10, 40, 10]); inp.focus();
+      buzz([10, 40, 10]);
     }
   });
 }
@@ -959,13 +1001,28 @@ function playUnlock() {
   var gt = $('#gate');
   if (rm()) { unlockApp(); return; }
   unlocking = true; buzz([12, 30, 18]);
-  gt.classList.remove('bad'); gt.classList.add('unl', 'leaving');
+  gt.classList.remove('bad', 'intro'); gt.classList.add('hold');
   unlockApp();
-  setTimeout(function () {
-    var hl = $('#hlogo'); if (hl) { hl.classList.remove('shine'); void hl.offsetWidth; hl.classList.add('shine'); }
-  }, 500);
-  setTimeout(function () { gt.classList.remove('unl', 'leaving'); unlocking = false; }, 1200);
+  requestAnimationFrame(function () { requestAnimationFrame(function () {
+    gt.classList.add('unl', 'leaving');
+    setTimeout(function () { gt.classList.remove('unl', 'leaving', 'hold'); unlocking = false;
+      var hl = $('#hlogo'); if (hl) { hl.classList.remove('shine'); void hl.offsetWidth; hl.classList.add('shine'); } }, 1050);
+  }); });
 }
+/* entrada: a logo começa no centro (igual à abertura do app), um arco dourado corta em volta, brilho passa, ela sobe e o campo de senha aparece */
+function gateIntro() {
+  var gt = $('#gate'), gx = gt.querySelector('.gx');
+  gt.classList.remove('ready', 'intro');
+  if (rm()) { gt.classList.add('ready'); return; }
+  gx.style.transition = 'none'; gx.style.setProperty('--dy', '0px');
+  var r = gx.getBoundingClientRect();
+  gx.style.setProperty('--dy', Math.round(innerHeight / 2 - (r.top + r.height / 2)) + 'px');
+  void gx.offsetWidth; gx.style.transition = '';
+  gt.classList.add('intro');
+  var lg = gx.querySelector('.lg'); lg.classList.remove('shine'); void lg.offsetWidth; lg.classList.add('shine');
+  setTimeout(function () { gt.classList.add('ready'); }, 1500);
+}
+gateIntro();
 function unlockApp() {
   document.body.classList.remove('locked');
   PT = null; IND = null; tab = 'inicio';
@@ -976,14 +1033,43 @@ function unlockApp() {
 function lockApp() {
   closeSheet(true); stopSync(); SEEN = {};
   main.innerHTML = ''; nav.scrollLeft = 0; document.body.classList.add('locked');
-  var gt = $('#gate'); gt.classList.remove('unl', 'leaving', 'bad'); unlocking = false;
+  var gt = $('#gate'); gt.classList.remove('unl', 'leaving', 'bad', 'hold'); unlocking = false; gateIntro();
   var lg = gt.querySelector('.lg'); lg.classList.remove('shine'); void lg.offsetWidth; lg.classList.add('shine');
-  setTimeout(function () { try { $('#lock-pass').focus(); } catch (e) {} }, 50);
+  $('#lock-pass').value = ''; pinDots();
 }
-$('#lock-btn').addEventListener('click', handleLock);
-$('#lock-pass').addEventListener('keydown', function (e) { if (e.key === 'Enter') handleLock(); });
+function pinDots() {
+  var n = $('#lock-pass').value.length, pn = $('#pin'), d = pn.children;
+  while (d.length < Math.max(4, n)) pn.appendChild(document.createElement('i'));
+  while (d.length > Math.max(4, n)) pn.removeChild(pn.lastChild);
+  for (var i = 0; i < d.length; i++) d[i].classList.toggle('on', i < n);
+}
+function pinKey(k) {
+  if (unlocking) return;
+  var inp = $('#lock-pass');
+  $('#lock-error').textContent = '';
+  if (k === 'ok') { handleLock(); return; }
+  if (k === 'del') inp.value = inp.value.slice(0, -1);
+  else if (inp.value.length < 12) inp.value += k;
+  pinDots();
+  if (k !== 'del' && inp.value.length >= 4 && window.crypto && crypto.subtle) {
+    var v = inp.value;
+    sha256(v).then(function (h) { if (h === SENHA_HASH && $('#lock-pass').value === v) handleLock(); });
+  }
+}
+$('#kp').addEventListener('click', function (e) {
+  var b = e.target.closest('.k'); if (!b) return;
+  buzz(8); b.classList.remove('hit'); void b.offsetWidth; b.classList.add('hit');
+  setTimeout(function () { b.classList.remove('hit'); }, 450);
+  pinKey(b.getAttribute('data-k'));
+});
+document.addEventListener('keydown', function (e) {
+  if (!document.body.classList.contains('locked') || unlocking) return;
+  if (/^[0-9]$/.test(e.key)) { e.preventDefault(); pinKey(e.key); }
+  else if (e.key === 'Backspace') { e.preventDefault(); pinKey('del'); }
+  else if (e.key === 'Enter') { e.preventDefault(); pinKey('ok'); }
+});
 (function initGate() {
-  if (!firebaseOk) $('#lock-sub').textContent = 'Não foi possível carregar o banco de dados. Verifique a internet e recarregue a página.';
+  if (!firebaseOk) { var ls = $('#lock-sub'); ls.textContent = 'Não foi possível carregar o banco de dados. Verifique a internet e recarregue a página.'; ls.classList.add('on'); }
 })();
 
 
